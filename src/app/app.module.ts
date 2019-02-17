@@ -6,7 +6,7 @@ import { ListingsComponent } from './listings/listings.component';
 import { ListingService } from './listing.service';
 import { TimeSinceListedPipe } from './pipes/time-since-listed.pipe';
 import { FilterPipe } from './pipes/filter.pipe';
-
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -16,7 +16,8 @@ import { FilterPipe } from './pipes/filter.pipe';
   ],
   imports: [
     BrowserModule,
-    FormsModule,
+    HttpClientModule,
+    FormsModule
   ],
   providers: [ ListingService ],
   bootstrap: [ AppComponent ]

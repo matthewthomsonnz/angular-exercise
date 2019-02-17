@@ -12,6 +12,7 @@ export class FilterPipe implements PipeTransform {
   transform(listings: any, term?: any): any {
     function flip() {
       setTimeout(function(){
+        
         $(".col-xs-12").each(function(index) {
           $(this).delay(60*index).animate({  textIndent: 0 }, {
             step: function(now,fx) {

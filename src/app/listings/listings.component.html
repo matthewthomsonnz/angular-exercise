@@ -10,7 +10,7 @@
     <!-- retry countdown -->
     <div id="try-again-countdown"></div>
     <!-- loop this for each returned listing -->
-    <div class="col-xs-12 col-sm-6" *ngFor="let listing of listings | filter:term" [class.selected]="listing === selectedListing" (click)="onSelect(listing)" >
+    <div class="col-xs-12 col-sm-6 item" *ngFor="let listing of listings | filter:term" [class.selected]="listing === selectedListing" (click)="onSelect(listing)" ng-change="onChange()">
       <div class="panel panel-default">
         <div class="panel-heading">    
           <p>{{ listing.company }}</p> 
