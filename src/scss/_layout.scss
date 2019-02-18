@@ -34,7 +34,9 @@ header {
     width: 250px;
   }
 }
-
+.style {
+  transform: rotateX(0deg)
+}
 // listings
 .container {
   .row {
@@ -52,7 +54,10 @@ header {
       -ms-transform: perspective(1000px) rotateX(0deg) translateY(0px);
       transform: perspective(1000px) rotateX(90deg) translateY(0px);
       margin-bottom: 20px;
-
+      &.active {
+        @include prefixed-transition(transform, .3s)
+        transform: rotateX(0deg);
+      }
       .panel {
         @include prefixed-transition(transform, .3s)
         border-bottom: 7px solid lightgrey;
@@ -60,6 +65,8 @@ header {
         flex-direction: column;
         height: 100%;
         z-index: 1;
+
+
 
         &:hover {
           @include box-shadow(0, 8px, 18px, rgba(0,0,0,0.25));
