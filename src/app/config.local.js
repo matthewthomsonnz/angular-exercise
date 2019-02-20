@@ -1,1 +1,0 @@
-window.DEV_TOOL_SETTING = 'inline-source-map';
