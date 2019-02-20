@@ -42,7 +42,7 @@ header {
   .row {
     @include flex;
     @include flex-wrap(wrap);
-    
+
     // Safari bug workaround
     &:before, &:after {
        content: normal;

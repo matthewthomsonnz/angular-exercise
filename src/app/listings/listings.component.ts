@@ -31,20 +31,45 @@ export class ListingsComponent implements OnInit{
   ngOnInit() {
     const http = this.http;
     function getListings(){
-      http.get('https://jsonp.afeld.me/?url=https://jobs.github.com/positions.json').subscribe(data => {
-        loader.style.opacity = "0";
-        setTimeout(() => {
-          loader.parentNode.removeChild(loader);
-        }, 2000);
-        // returned job objects into listings array
-        componentScope.listings = data;
-      }, error => countdown321());
+
+
+
+
+      var request = new XMLHttpRequest();
+      request.open('GET', 'https://jsonp.afeld.me/?url=https://jobs.github.com/positions.json', true);
+      
+      request.onload = function() {
+        if (request.status >= 200 && request.status < 400) {
+          // Success!
+          componentScope.listings = JSON.parse(request.responseText);
+          loader[0].parentNode.removeChild(loader[0]);
+        } else {
+          // We reached our target server, but it returned an error
+      
+        }
+      };
+      
+      request.onerror = function() {
+        // There was a connection error of some sort
+      };
+      
+      request.send();
+
+
+      // http.get('https://jsonp.afeld.me/?url=https://jobs.github.com/positions.json').subscribe(data => {
+      //   loader.style.opacity = "0";
+      //   setTimeout(() => {
+      //     loader.parentNode.removeChild(loader);
+      //   }, 2000);
+      //   // returned job objects into listings array
+      //   componentScope.listings = data;
+      // }, error => countdown321());
     };
     getListings();
 
     var componentScope = this;
     let retryMsg = document.getElementById("try-again-countdown");
-    let loader = document.getElementsByClassName("loader")[0];
+    let loader = document.getElementsByClassName("loader") as HTMLCollectionOf<HTMLElement>; 
     var iteration = 3;
     var oneSecondInterval;
     function countdown321() {
@@ -53,11 +78,11 @@ export class ListingsComponent implements OnInit{
 
     function currentTimerStatus() {
       retryMsg.innerHTML = "Couldn't connect, let's try again in "+ iteration +"...";
-      loader.style.display = 'none';
+      loader[0].style.display = 'none';
       iteration--;
       if (iteration == -1) {
         retryMsg.innerHTML = "";
-         loader.style.display = "";
+         loader[0].style.display = "";
           clearInterval(oneSecondInterval);
           iteration = 3;
           getListings();
@@ -66,12 +91,14 @@ export class ListingsComponent implements OnInit{
   }
 
   ngAfterViewChecked()	{
-    var listingCollection = document.getElementsByClassName('col-xs-12');
-    if (this.initialViewChecked === false && listingCollection.length != 0) {
-      Array.from(document.getElementsByClassName('col-xs-12')).forEach((elem, i, elements) => {
-        if ("undefined" !== elem.style) elem.style.transitionDelay = i*50 + "ms";
-        if(i+1 ==  elements.length) this.initialViewChecked = true;
+    var listingCollection = document.getElementsByClassName('col-xs-12') as HTMLCollectionOf<HTMLElement>;
+    if (this.initialViewChecked === false) {
+      Array.from(listingCollection).forEach((elem, i, elements) => {
+        elem.style.transitionDelay = i*50 + "ms";
+        setTimeout(()=>elem.style.transform = "rotateX(0deg)",100)
+        if (i == 49) this.initialViewChecked = true
       });
  }
-  } 
+  }
+
 }
