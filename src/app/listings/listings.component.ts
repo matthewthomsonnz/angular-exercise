@@ -1,7 +1,6 @@
-import { Component, OnInit, AfterViewChecked, Directive, ElementRef, Renderer2, Input, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ListingService, Listing } from '../listing.service';
 import { TimeSinceListedPipe } from '../pipes/time-since-listed.pipe';
-import { HttpClient } from '@angular/common/http';
  
 @Component({
   selector: 'app-listings',
@@ -9,10 +8,10 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class ListingsComponent implements OnInit{
+  constructor(private listingService: ListingService) {}
   title = "Angular exercise";
   listings: Listing[];
   selectedListing: Listing;
-  constructor(private listingService: ListingService, private http: HttpClient, private rd: Renderer2) { }
   results = '';
   initialViewChecked = false;
 
@@ -29,41 +28,18 @@ export class ListingsComponent implements OnInit{
   }
 
   ngOnInit() {
-    const http = this.http;
     function getListings(){
-
-
-
-
       var request = new XMLHttpRequest();
       request.open('GET', 'https://jsonp.afeld.me/?url=https://jobs.github.com/positions.json', true);
-      
       request.onload = function() {
-        if (request.status >= 200 && request.status < 400) {
-          // Success!
-          componentScope.listings = JSON.parse(request.responseText);
+          componentScope.listings = JSON.parse(request.responseText).sort(function(a,b){
+            return new Date(b.created_at) - new Date(a.created_at);
+          });
           loader[0].parentNode.removeChild(loader[0]);
-        } else {
-          // We reached our target server, but it returned an error
-      
-        }
+
       };
-      
-      request.onerror = function() {
-        // There was a connection error of some sort
-      };
-      
+      request.onerror = () => countdown321();
       request.send();
-
-
-      // http.get('https://jsonp.afeld.me/?url=https://jobs.github.com/positions.json').subscribe(data => {
-      //   loader.style.opacity = "0";
-      //   setTimeout(() => {
-      //     loader.parentNode.removeChild(loader);
-      //   }, 2000);
-      //   // returned job objects into listings array
-      //   componentScope.listings = data;
-      // }, error => countdown321());
     };
     getListings();
 
@@ -95,8 +71,8 @@ export class ListingsComponent implements OnInit{
     if (this.initialViewChecked === false) {
       Array.from(listingCollection).forEach((elem, i, elements) => {
         elem.style.transitionDelay = i*50 + "ms";
-        setTimeout(()=>elem.style.transform = "rotateX(0deg)",100)
-        if (i == 49) this.initialViewChecked = true
+        setTimeout(()=>elem.style.transform = "rotateX(0deg)",100);
+        if (i == 49) this.initialViewChecked = true;
       });
  }
   }
