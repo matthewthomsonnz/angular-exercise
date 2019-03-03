@@ -33,7 +33,7 @@ export class ListingsComponent implements OnInit{
       request.open('GET', 'https://jsonp.afeld.me/?url=https://jobs.github.com/positions.json', true);
       request.onload = function() {
           componentScope.listings = JSON.parse(request.responseText).sort(function(a,b){
-            return new Date(b.created_at) - new Date(a.created_at);
+            return +new Date(b.created_at) - +new Date(a.created_at);
           });
           loader[0].parentNode.removeChild(loader[0]);
 
