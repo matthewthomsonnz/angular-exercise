@@ -84,8 +84,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _listing_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./listing.service */ "./src/app/listing.service.ts");
 /* harmony import */ var _pipes_time_since_listed_pipe__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./pipes/time-since-listed.pipe */ "./src/app/pipes/time-since-listed.pipe.ts");
 /* harmony import */ var _pipes_filter_pipe__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./pipes/filter.pipe */ "./src/app/pipes/filter.pipe.ts");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/esm5/http.js");
-
 
 
 
@@ -108,7 +106,6 @@ var AppModule = (function () {
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
-                _angular_common_http__WEBPACK_IMPORTED_MODULE_9__["HttpClientModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"]
             ],
             providers: [_listing_service__WEBPACK_IMPORTED_MODULE_6__["ListingService"]],
@@ -187,16 +184,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var _listing_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../listing.service */ "./src/app/listing.service.ts");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/esm5/http.js");
-
 
 
 
 var ListingsComponent = (function () {
-    function ListingsComponent(listingService, http, rd) {
+    function ListingsComponent(listingService) {
         this.listingService = listingService;
-        this.http = http;
-        this.rd = rd;
         this.title = "Angular exercise";
         this.results = '';
         this.initialViewChecked = false;
@@ -213,32 +206,17 @@ var ListingsComponent = (function () {
         }
     };
     ListingsComponent.prototype.ngOnInit = function () {
-        var http = this.http;
         function getListings() {
             var request = new XMLHttpRequest();
             request.open('GET', 'https://jsonp.afeld.me/?url=https://jobs.github.com/positions.json', true);
             request.onload = function () {
-                if (request.status >= 200 && request.status < 400) {
-                    // Success!
-                    componentScope.listings = JSON.parse(request.responseText);
-                    loader[0].parentNode.removeChild(loader[0]);
-                }
-                else {
-                    // We reached our target server, but it returned an error
-                }
+                componentScope.listings = JSON.parse(request.responseText).sort(function (a, b) {
+                    return +new Date(b.created_at) - +new Date(a.created_at);
+                });
+                loader[0].parentNode.removeChild(loader[0]);
             };
-            request.onerror = function () {
-                // There was a connection error of some sort
-            };
+            request.onerror = function () { return countdown321(); };
             request.send();
-            // http.get('https://jsonp.afeld.me/?url=https://jobs.github.com/positions.json').subscribe(data => {
-            //   loader.style.opacity = "0";
-            //   setTimeout(() => {
-            //     loader.parentNode.removeChild(loader);
-            //   }, 2000);
-            //   // returned job objects into listings array
-            //   componentScope.listings = data;
-            // }, error => countdown321());
         }
         ;
         getListings();
@@ -280,7 +258,7 @@ var ListingsComponent = (function () {
             selector: 'app-listings',
             template: __webpack_require__(/*! ./listings.component.html */ "./src/app/listings/listings.component.html")
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_listing_service__WEBPACK_IMPORTED_MODULE_2__["ListingService"], _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"], _angular_core__WEBPACK_IMPORTED_MODULE_1__["Renderer2"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_listing_service__WEBPACK_IMPORTED_MODULE_2__["ListingService"]])
     ], ListingsComponent);
     return ListingsComponent;
 }());
@@ -345,12 +323,10 @@ __webpack_require__.r(__webpack_exports__);
 var TimeSinceListedPipe = (function () {
     function TimeSinceListedPipe() {
     }
-    // turn date listing posted into days since today
     TimeSinceListedPipe.prototype.transform = function (value, args) {
         var d = new Date().getTime();
         var d2 = new Date(value).getTime();
         var diff = +new Date(d - d2);
-        // milliseconds in a day, round to zero decimal places
         var daysAgo = Math.round(diff / 86400000);
         var plural = "";
         if (!value)
