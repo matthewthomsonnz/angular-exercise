@@ -1,10 +1,7 @@
+[Demo](https://matthewthomsonnz.github.io/angular-exercise/)
+
 # Countdown Angular exercise
 
-Development task to demonstrate my coding style/skill, using HTML, SASS and Angular.
+Development task to learn Angular.
 
-## To initialise simply run:
-
-1) `npm install`
-
-2) `ng serve --o`
-
+Retrieves and displays Github job listings API.
