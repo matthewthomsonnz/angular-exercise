@@ -1,7 +1,7 @@
-[Demo](https://matthewthomsonnz.github.io/angular-exercise/)
+# [Demo](https://matthewthomsonnz.github.io/angular-exercise/)
 
-# Countdown Angular exercise
+## Countdown Angular exercise
 
-Development task to learn Angular.
+Development task to help learn Angular.
 
-Retrieves and displays Github job listings API.
+Retrieves and displays from Github job listings API.
